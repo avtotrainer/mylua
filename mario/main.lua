@@ -4,7 +4,7 @@ local Mario = require("mario")
 
 -- მენიუს მდგომარეობა
 local menuActive = false
-
+local mario
 -- love.load ფუნქცია გამოიყენება თამაშის დასაწყებად
 function love.load()
 	-- ვქმნით Mario-ს ობიექტს საწყისი პოზიციით (100, 100)
