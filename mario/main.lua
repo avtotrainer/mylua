@@ -4,6 +4,7 @@ local Mario = require("mario")
 
 -- მენიუს მდგომარეობა
 local menuActive = false
+local mario
 
 -- love.load ფუნქცია გამოიყენება თამაშის დასაწყებად
 function love.load()
@@ -39,5 +40,8 @@ function love.keypressed(key)
 	elseif menuActive and key == "1" then
 		-- თუ მენიუ აქტიურია და 1 დაჭერილია, ვხურავთ თამაშს
 		love.event.quit()
+	elseif key == "space" then
+		-- თუ პრაბელზეა დაწოლა მარიო ხტება
+		mario:jump()
 	end
 end

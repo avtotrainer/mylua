@@ -1,7 +1,7 @@
 -- mario.lua
 -- Mario-ს პერსონაჟის მოდული
 
--- ვქმნით ცარიელ მაგიდას Mario-სთვის და ვაძლევთ მას ინდექსს
+-- ვქმნით ცარიელ ცრილს Mario-სთვის და ვაძლევთ მას ინდექსს
 Mario = {}
 Mario.__index = Mario
 
@@ -19,6 +19,14 @@ function Mario:create(x, y)
 	mario.height = 32
 	-- ვაძლევთ Mario-ს სიჩქარეს
 	mario.speed = 200
+	-- ვერტიკალური სიჩქარე
+	mario.dy = 0
+	-- გრავიტაცია, რომელიც მარიოს მიწაზე აბრუნებს
+	mario.gravity = -500
+	-- ახტომის ძალა
+	mario.jumpStrength = 300
+	-- ახტომის მდგომარეობა (მიმდინარეობს თუ არა იახტომა)
+	mario.isJumping = false
 	-- ვაბრუნებთ Mario-ს ობიექტს
 	return mario
 end
@@ -34,9 +42,30 @@ function Mario:move(dt)
 		-- ვზრდით x კოორდინატს, რათა Mario მარჯვნივ გადავიდეს
 		self.x = self.x + self.speed * dt
 	end
-end
+	-- ვერტიკალური მოძრაობა
+	if self.isJumping then
+		-- ვამატებთ გრავიტაციის ძალას ვერტიკალურ სიჩქარეზე
+		self.dy = self.dy + self.gravity * dt
+		-- ვცვლით მარიოს ვერტიკალურ პოზიციას
+		self.y = self.y - self.dy * dt
 
--- ფუნქცია Mario-ს დასახატად
+		-- მიწაზე დაბრუნების შემთხვევაში
+		if self.y > 100 then
+			self.y = 100
+			self.dy = 0
+			self.isJumping = false
+		end
+	end
+end
+--ფუნქცია მარიოს ახტომისათვის
+function Mario:jump()
+	-- თუ მარიო არ ხტება, ვიწყებთ ახტომას
+	if not self.isJumping then
+		self.dy = self.jumpStrength
+		self.isJumping = true
+	end
+end
+--: ფუნქცია Mario-ს დასახატად
 function Mario:draw()
 	-- ვხატავთ Mario-ს როგორც შავს კვადრატს
 	love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
